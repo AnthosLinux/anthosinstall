@@ -6,19 +6,35 @@ none="\e[0m"
 bold=$(tput bold)
 normal=$(tput sgr0)
 
-function locale() {
-    echo ""
-	ls /usr/share/kbd/keymaps/**/*.map.gz
-    echo ""
-    read -e -p "${bold}Do you want to change the keyboard locale? (y or n)${normal}" choice
+function checking() {
+    if [ "$(cat /sys/firmware/efi/fw_platform_size)" -eq 64 ]; then
+        echo -e "${bold}You are using 64-bit platform!${normal}"
+        echo "Continue..."
+    else
+        echo "You are not using 64-bit platform!"
+        exit
+    fi
+
+    echo "The default locale is English..."
+
+    for i in {1..5}; do
+        echo -n "$i.."
+        sleep 1
+    done
 }
 
-locale
 
-while [ "$choice" != "y" ]; do
-    if [ "$choice" = "n" ]; then
-        echo "you select no"
-        sleep 1
-        locale
-    fi
-done
+checking
+
+sleep 2
+
+# function internet(){
+# 	
+#
+# }
+#
+# internet
+
+function pacman(){
+	pacman-key --init
+}
